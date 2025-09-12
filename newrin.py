@@ -47,7 +47,7 @@ def listen_command():
 
     return query.lower()
 
-PERPLEXITY_API_KEY = "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"
+PERPLEXITY_API_KEY = "Paste Your Perplexity API Key here"
 
 # ✅ Fixed Perplexity function
 def ask_perplexity(question):
@@ -164,7 +164,7 @@ def open_notepad_and_dictate():
             speak("Speech service is unavailable right now.")
 
 def ask_perplexity(question):
-    PERPLEXITY_API_KEY = "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"
+    PERPLEXITY_API_KEY = "Paste Your Perplexity API Key here"
 
     url = "https://api.perplexity.ai/chat/completions"
     headers = {
