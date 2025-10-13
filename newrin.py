@@ -10,11 +10,11 @@ import pyautogui
 import time
 import requests
 
-# Speak using Edge TTS
+
 from edge_tts import Communicate
 
 def speak(text):
-    print(f"Luna: {text}")  # 👈 Print what Luna says
+    print(f"Luna: {text}")
     async def _speak_async():
         communicate = Communicate(text=text, voice="en-IN-NeerjaNeural")
         await communicate.save("tts_output.mp3")
@@ -26,14 +26,13 @@ def speak(text):
         print("Speech error:", e)
 
 
-# Recognize voice
 def listen_command():
     r = sr.Recognizer()
     with sr.Microphone() as source:
         print("Listening...")
-        r.adjust_for_ambient_noise(source, duration=1)  # auto-calibration
-        r.energy_threshold = 200   # more sensitive
-        r.pause_threshold = 0.6    # quicker response
+        r.adjust_for_ambient_noise(source, duration=1) 
+        r.energy_threshold = 200 
+        r.pause_threshold = 0.6   
         audio = r.listen(source)
 
     try:
@@ -49,7 +48,7 @@ def listen_command():
 
 PERPLEXITY_API_KEY = "Paste Your Perplexity API Key here"
 
-# ✅ Fixed Perplexity function
+
 def ask_perplexity(question):
     url = "https://api.perplexity.ai/chat/completions"
     headers = {
@@ -57,7 +56,7 @@ def ask_perplexity(question):
         "Content-Type": "application/json"
     }
     data = {
-        "model": "pplx-7b-online",   # or pplx-70b-chat
+        "model": "pplx-7b-online",   
         "messages": [
             {"role": "system", "content": "You are a helpful assistant."},
             {"role": "user", "content": question}
@@ -70,7 +69,7 @@ def ask_perplexity(question):
         response.raise_for_status()
         result = response.json()
 
-        # Extract answer safely
+       
         reply = (
             result["choices"][0].get("message", {}).get("content")
             or result["choices"][0].get("text", "")
@@ -79,7 +78,7 @@ def ask_perplexity(question):
     except Exception as e:
         return f"Error reaching Perplexity: {e}\nDetails: {response.text if 'response' in locals() else ''}"
 
-# Process voice commands
+
 def process_command(cmd):
     cmd = cmd.lower()
 
@@ -121,7 +120,7 @@ def process_command(cmd):
     else:
         speak("Sorry, I didn't understand that.")
 
-# Greet on start
+
 def greet():
     hour = datetime.datetime.now().hour
     if hour < 12:
@@ -134,10 +133,10 @@ def greet():
 def open_notepad_and_dictate():
     speak("Opening Notepad and starting dictation mode.")
     subprocess.Popen(["notepad.exe"])
-    time.sleep(1)  # give Notepad a second to open
+    time.sleep(1) 
     pyautogui.typewrite("Dictation mode activated. Start speaking...\n")
 
-    recognizer = sr.Recognizer()  # ✅ define here
+    recognizer = sr.Recognizer() 
 
     while True:
         try:
@@ -172,7 +171,7 @@ def ask_perplexity(question):
         "Content-Type": "application/json",
     }
     data = {
-        "model": "sonar",  # One of the valid model names
+        "model": "sonar", 
         "messages": [
             {"role": "system", "content": "You are LUNA, a helpful AI assistant."},
             {"role": "user", "content": question}
@@ -193,13 +192,13 @@ def ask_perplexity(question):
 
 
 
-# Main loop
+
 def main():
     greet()
     while True:
         command = listen_command()
 
-        if "hello luna" in command:   # respond naturally to 'luna'
+        if "hello luna" in command: 
             speak("Yes sir?")
             command = listen_command()
             process_command(command)
